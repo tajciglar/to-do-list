@@ -1,6 +1,7 @@
 // src/App.jsx
 import Homepage from './Homepage';
 import Sidebar from './Sidebar';
+import '../styles/App.css'
 
 const App = () => {
     const handleShowAllTasks = () => {
@@ -22,9 +23,6 @@ const App = () => {
                 onShowTodaysTasks={handleShowTodaysTasks}
                 onShowInput={handleShowInput}
             />
-            <div id="topBar">
-                <input type="text" name="searchbar" id="searchbar" />
-            </div>
             <Homepage />
         </div>
     );

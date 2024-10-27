@@ -1,6 +1,16 @@
-// eslint-disable-next-line react/prop-types
-const Sidebar = ({ onShowAllTasks, onShowTodaysTasks, onShowInput }) => {
+import { useNavigate } from "react-router-dom";
 
+// eslint-disable-next-line react/prop-types
+const Sidebar = ({  onShowInput }) => {
+    const navigate = useNavigate();
+
+    const handleShowAllTasks = () => {
+        navigate("/"); // Update with your desired route
+    };
+
+    const handleShowTodaysTasks = () => {
+        navigate('/todays-tasks'); // Update with your desired route
+    };
 
     return (
         <div
@@ -10,13 +20,13 @@ const Sidebar = ({ onShowAllTasks, onShowTodaysTasks, onShowInput }) => {
             <div id="sideBarList">
                 <ul className="space-y-4">
                     <li
-                        onClick={onShowAllTasks}
+                        onClick={handleShowAllTasks}
                         className="cursor-pointer hover:text-blue-400"
                     >
                         All Tasks
                     </li>
                     <li
-                        onClick={onShowTodaysTasks}
+                        onClick={handleShowTodaysTasks}
                         className="cursor-pointer hover:text-blue-400"
                     >
                         Today

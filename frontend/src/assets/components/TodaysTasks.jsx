@@ -1,7 +1,9 @@
+// src/TodaysTasks.jsx
+import { useState, useEffect } from 'react';
+
 const TodaysTasks = () => {
     const date = new Date();
-    // Get today's date in YYYY-MM-DD format
-    const todaysDate = date.toISOString().split('T')[0]; // "2024-10-27" for example
+    const todaysDate = date.toISOString().split('T')[0];
 
     const initialTasks = [
         {
@@ -41,34 +43,62 @@ const TodaysTasks = () => {
         }
     ];
 
-    // Filter tasks for today's date based on the startDate or dueDate
-    const tasks = initialTasks.filter(task => 
-        task.startDate === todaysDate || task.dueDate === todaysDate
-    );
+    const [tasks, setTasks] = useState([]);
 
-    // Logging tasks to check the output
-    console.log(tasks);
+    useEffect(() => {
+        const filteredTasks = initialTasks.filter(task => 
+            task.startDate === todaysDate || task.dueDate === todaysDate
+        );
+        setTasks(filteredTasks);
+    }, [todaysDate]);
 
-    // TODO: get tasks for today's date from the DB
+    const formatDate = (inputDate) => {
+        const dateParts = inputDate.split('-');
+        if (dateParts.length === 3) {
+            const year = dateParts[0];
+            const month = dateParts[1];
+            const day = dateParts[2];
+            return `${day}-${month}-${year}`;
+        }
+        return inputDate;
+    };
 
     return (
         <div id="content" className="grid grid-rows-[30px_1fr] p-4 ml-2">
-            <h2 className="text-lg font-bold">Today&apos;s Tasks</h2>
-            <div className="mt-4">
-                {tasks.length > 0 ? (
+            <div id="dateHolder" className="text-lg font-bold mb-4">
+                {`TODAY'S TASKS (${todaysDate})`}
+            </div>
+            <div className="flex flex-col gap-6 ml-2">
+                {tasks.length !== 0 ? (
                     tasks.map((task, index) => (
-                        <div key={index} className="bg-gray-100 border border-gray-300 p-4 rounded-lg shadow-md">
-                            <h3 className="font-semibold">{task.title}</h3>
-                            <p>{task.description}</p>
-                            <p className="text-sm text-gray-600">Start Date: {task.startDate}</p>
-                            <p className="text-sm text-gray-600">Due Date: {task.dueDate}</p>
-                            <p className={`font-bold ${
-                                    task.priority === 'High' ? 'text-red-500' : task.priority === 'Medium' ? 'text-yellow-500' : 'text-green-500'
-                                }`}>Priority: {task.priority}</p>
+                        <div
+                            key={index}
+                            className="grid grid-cols-[30px_1fr] gap-2 bg-gray-100 border border-gray-300 p-4 rounded-lg shadow-md"
+                        >
+                            <div className="content-center justify-self-center">
+                                <input
+                                    type="checkbox"
+                                    className="w-6 h-6 rounded-md border-gray-300 text-blue-600 focus:ring-blue-500"
+                                    // Implement task completion handling here if needed
+                                />
+                            </div>
+                            <div>
+                                <h3 className="text-2xl font-semibold mb-2">{task.title}</h3>
+                                <p className="text-gray-700 mb-2">{task.description}</p>
+                                <div className="text-sm text-gray-500 space-x-4">
+                                    <span>Start: {formatDate(task.startDate)}</span>
+                                    <span>Due: {formatDate(task.dueDate)}</span>
+                                    <span className={`font-bold ${
+                                        task.priority === 'High' ? 'text-red-500' : task.priority === 'Medium' ? 'text-yellow-500' : 'text-green-500'
+                                    }`}>
+                                        Priority: {task.priority}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     ))
                 ) : (
-                    <p>No tasks for today!</p>
+                    <div className="text-center text-gray-500">No tasks for today!</div>
                 )}
             </div>
         </div>

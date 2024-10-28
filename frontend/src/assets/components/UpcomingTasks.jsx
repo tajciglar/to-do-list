@@ -1,53 +1,51 @@
-// src/Homepage.jsx
 import { useEffect, useState } from 'react';
-import moment from 'moment';
 
-moment.locale("en-gb");
+const UpcomingTasks = () => {
 
-const Homepage = () => {
+    const date = new Date();
+    const todaysDate = date.toISOString().split('T')[0];
+    
     const initialTasks = [
         {
             title: "Buy Groceries",
             description: "Purchase milk, eggs, bread, and fruits.",
             startDate: "2024-10-23",
             dueDate: "2024-10-24",
-            priority: "High"
+            priority: "High",
+            isFinished: true
         },
         {
             title: "Complete Project Report",
             description: "Finish the final report for the project and send it to the manager.",
             startDate: "2024-10-22",
             dueDate: "2024-10-28",
-            priority: "Medium"
+            priority: "Medium",
+            isFinished: false
         },
         {
             title: "Schedule Doctor Appointment",
             description: "Call the clinic and schedule a yearly check-up.",
             startDate: "2024-10-24",
             dueDate: "2024-10-25",
-            priority: "Low"
+            priority: "Low",
+            isFinished: true
         },
         {
             title: "Plan Weekend Trip",
             description: "Research places to visit and make travel arrangements.",
-            startDate: "2024-10-20",
+            startDate: "2024-10-29",
             dueDate: "2024-10-26",
-            priority: "Medium"
-        },
-        {
-            title: "Update Resume",
-            description: "Revise resume with the latest job experiences and skills.",
-            startDate: "2024-10-18",
-            dueDate: "2024-10-22",
-            priority: "High"
+            priority: "Medium",
+            isFinished: false
         }
     ];
 
-    const [tasks, setTasks] = useState([]);
-    const [finishedTasks, setFinishedTasks] = useState([]);
-
+    const [upcomingTasks, setUpcomingTasks] = useState([]);
     useEffect(() => {
-        setTasks(initialTasks);
+        const tasksFiltered = initialTasks.filter(task => 
+            !task.isFinished && new Date(task.startDate) > new Date(todaysDate)
+        );
+        setUpcomingTasks(tasksFiltered);
     }, []);
 
     const formatDate = (inputDate) => {
@@ -61,22 +59,14 @@ const Homepage = () => {
         return inputDate;
     };
 
-    const handleFinishedTask = (task) => {
-        
-        setTasks(tasks.filter(t => t !== task));
-        setFinishedTasks([...finishedTasks, task]);
-        
-        // TODO: Update the task status in the database
-    }
-
     return (
         <div id="content" className="grid grid-rows-[30px_1fr] p-4 ml-2">
             <div id="dateHolder" className="text-lg font-bold mb-4">
-                {`TODAY ${moment().format('D/MM/YYYY')}`}
+                {"UPCOMING TASKS"}
             </div>
             <div className="flex flex-col gap-6 ml-2">
-                {tasks.length !== 0 ? (
-                    tasks.map((task, index) => (
+                {upcomingTasks.length !== 0 ? (
+                    upcomingTasks.map((task, index) => (
                         <div
                             key={index}
                             className="grid grid-cols-[30px_1fr] gap-2 bg-gray-100 border border-gray-300 p-4 rounded-lg shadow-md"
@@ -85,8 +75,7 @@ const Homepage = () => {
                                 <input
                                     type="checkbox"
                                     className="w-6 h-6 rounded-md border-gray-300 text-blue-600 focus:ring-blue-500"
-                                    //checked={finishedTasks.includes(task)}
-                                    onChange={() => handleFinishedTask(task)}
+                                    disabled
                                 />
                             </div>
                             <div>
@@ -105,11 +94,11 @@ const Homepage = () => {
                         </div>
                     ))
                 ) : (
-                    <div className="text-center text-gray-500">No tasks available</div>
+                    <div className="text-center text-gray-500">No upcoming tasks available</div>
                 )}
             </div>
         </div>
     );
 };
 
-export default Homepage;
+export default UpcomingTasks;

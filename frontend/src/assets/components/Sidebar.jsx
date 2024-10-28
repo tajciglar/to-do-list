@@ -12,6 +12,14 @@ const Sidebar = ({  onShowInput }) => {
         navigate('/todays-tasks'); // Update with your desired route
     };
 
+    const handleShowUpcomingTasks = () => {
+        navigate("/upcoming-tasks")
+    }
+
+    const handleShowFinishedTasks = () => {
+        navigate("/finished-tasks")
+    }
+
     return (
         <div
             id="sideBar"
@@ -31,8 +39,8 @@ const Sidebar = ({  onShowInput }) => {
                     >
                         Today
                     </li>
-                    <li className="cursor-pointer hover:text-blue-400">Upcoming</li>
-                    <li className="cursor-pointer hover:text-blue-400">Finished</li>
+                    <li onClick={handleShowUpcomingTasks} className="cursor-pointer hover:text-blue-400">Upcoming</li>
+                    <li onClick={handleShowFinishedTasks} className="cursor-pointer hover:text-blue-400">Finished</li>
                 </ul>
             </div>
             <div id="newTask" className="mt-8">

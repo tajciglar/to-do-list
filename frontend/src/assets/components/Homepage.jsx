@@ -1,73 +1,14 @@
-// src/Homepage.jsx
-import { useEffect, useState } from 'react';
 import moment from 'moment';
-
+import PropTypes from 'prop-types';
 moment.locale("en-gb");
 
-const Homepage = () => {
-    const initialTasks = [
-        {
-            title: "Buy Groceries",
-            description: "Purchase milk, eggs, bread, and fruits.",
-            startDate: "2024-10-23",
-            dueDate: "2024-10-24",
-            priority: "High"
-        },
-        {
-            title: "Complete Project Report",
-            description: "Finish the final report for the project and send it to the manager.",
-            startDate: "2024-10-22",
-            dueDate: "2024-10-28",
-            priority: "Medium"
-        },
-        {
-            title: "Schedule Doctor Appointment",
-            description: "Call the clinic and schedule a yearly check-up.",
-            startDate: "2024-10-24",
-            dueDate: "2024-10-25",
-            priority: "Low"
-        },
-        {
-            title: "Plan Weekend Trip",
-            description: "Research places to visit and make travel arrangements.",
-            startDate: "2024-10-20",
-            dueDate: "2024-10-26",
-            priority: "Medium"
-        },
-        {
-            title: "Update Resume",
-            description: "Revise resume with the latest job experiences and skills.",
-            startDate: "2024-10-18",
-            dueDate: "2024-10-22",
-            priority: "High"
-        }
-    ];
-
-    const [tasks, setTasks] = useState([]);
-    const [finishedTasks, setFinishedTasks] = useState([]);
-
-    useEffect(() => {
-        setTasks(initialTasks);
-    }, []);
-
+const Homepage = ({ tasks, onMarkTaskAsFinished }) => {
     const formatDate = (inputDate) => {
-        const dateParts = inputDate.split('-');
-        if (dateParts.length === 3) {
-            const year = dateParts[0];
-            const month = dateParts[1];
-            const day = dateParts[2];
-            return `${day}-${month}-${year}`;
-        }
-        return inputDate;
+        console.log(inputDate)
+        const [year, month, day] = inputDate.split('-');
+        return `${day}-${month}-${year}`;
     };
-
-    const handleFinishedTask = (task) => {
-        
-        setTasks(tasks.filter(t => t !== task));
-        setFinishedTasks([...finishedTasks, task]);
-        
-        // TODO: Update the task status in the database
-    }
+    
 
     return (
         <div id="content" className="grid grid-rows-[30px_1fr] p-4 ml-2">
@@ -85,8 +26,7 @@ const Homepage = () => {
                                 <input
                                     type="checkbox"
                                     className="w-6 h-6 rounded-md border-gray-300 text-blue-600 focus:ring-blue-500"
-                                    //checked={finishedTasks.includes(task)}
-                                    onChange={() => handleFinishedTask(task)}
+                                    onChange={() => onMarkTaskAsFinished(task)}
                                 />
                             </div>
                             <div>
@@ -110,6 +50,11 @@ const Homepage = () => {
             </div>
         </div>
     );
+};
+
+Homepage.propTypes = { 
+    tasks: PropTypes.array.isRequired,
+    onMarkTaskAsFinished: PropTypes.func.isRequired, 
 };
 
 export default Homepage;

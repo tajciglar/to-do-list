@@ -1,48 +1,8 @@
 // src/FinishedTasks.jsx
-import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
-const FinishedTasks = () => {
-    const initialTasks = [
-        {
-            title: "Buy Groceries",
-            description: "Purchase milk, eggs, bread, and fruits.",
-            startDate: "2024-10-23",
-            dueDate: "2024-10-24",
-            priority: "High",
-            isFinished: true
-        },
-        {
-            title: "Complete Project Report",
-            description: "Finish the final report for the project and send it to the manager.",
-            startDate: "2024-10-22",
-            dueDate: "2024-10-28",
-            priority: "Medium",
-            isFinished: false
-        },
-        {
-            title: "Schedule Doctor Appointment",
-            description: "Call the clinic and schedule a yearly check-up.",
-            startDate: "2024-10-24",
-            dueDate: "2024-10-25",
-            priority: "Low",
-            isFinished: true
-        },
-        {
-            title: "Plan Weekend Trip",
-            description: "Research places to visit and make travel arrangements.",
-            startDate: "2024-10-20",
-            dueDate: "2024-10-26",
-            priority: "Medium",
-            isFinished: true
-        }
-    ];
+const FinishedTasks = ({finishedTasks}) => {
 
-    const [finishedTasks, setFinishedTasks] = useState([]);
-
-    useEffect(() => {
-        const tasksFiltered = initialTasks.filter(task => task.isFinished);
-        setFinishedTasks(tasksFiltered);
-    }, []);
 
     const formatDate = (inputDate) => {
         const dateParts = inputDate.split('-');
@@ -96,6 +56,11 @@ const FinishedTasks = () => {
             </div>
         </div>
     );
+    
+};
+
+FinishedTasks.propTypes = {
+    finishedTasks: PropTypes.array.isRequired, 
 };
 
 export default FinishedTasks;
